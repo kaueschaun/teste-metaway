@@ -1,6 +1,6 @@
 const auth = {
     getToken: () => {
-        return sessionStorage.getItem('token');
+        return sessionStorage.getItem('token') || sessionStorage.getItem('token')
     },
 }
 

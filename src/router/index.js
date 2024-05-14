@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../../src/views/Login.vue';
+import paths from './paths';
 
 const isAuthenticated = () => {
-  return !!sessionStorage.getItem('token');
+  return localStorage.getItem('token') || sessionStorage.getItem('token'); 
 };
 
 const router = createRouter({
@@ -10,11 +11,15 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      redirect: paths.login 
+    },
+    {
+      path: paths.login,
       name: 'login',
       component: Login
     },
     {
-      path: '/home',
+      path: paths.home,
       name: 'home',
       component: () => import('../views/Home.vue'),
       meta: { requiresAuth: true } 

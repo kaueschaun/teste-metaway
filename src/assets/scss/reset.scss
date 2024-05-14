@@ -17,6 +17,33 @@ a {
   text-decoration: none;
 }
 
+
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset;
+  box-shadow: 0 0 0 1000px transparent inset;
+  -webkit-text-fill-color: #fff; 
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input:-moz-autofill,
+textarea:-moz-autofill,
+select:-moz-autofill {
+  box-shadow: 0 0 0 1000px transparent inset;
+  -moz-box-shadow: 0 0 0 1000px transparent inset;
+  -webkit-text-fill-color: #fff; 
+}
+
+
+input:-o-autofill,
+textarea:-o-autofill,
+select:-o-autofill {
+  box-shadow: 0 0 0 1000px transparent inset;
+  -o-box-shadow: 0 0 0 1000px transparent inset;
+  -webkit-text-fill-color: #fff; 
+}
+
 body, input, textarea, button {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;

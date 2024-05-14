@@ -1,5 +1,5 @@
 <script setup>
-  import { ref } from 'vue';
+  import { onMounted, ref } from 'vue';
   import Icon from '../components/_UI/Icon.vue'
   import loginApi from '../api/requests.js/login.js';
   import { useRouter } from 'vue-router';
@@ -8,9 +8,18 @@
   import {useToast} from 'vue-toast-notification';
   import * as Yup from 'yup';
   import { Form, Field } from 'vee-validate';
+  import auth from 'src/middlewares/auth';
+  import paths from 'src/router/paths';
+
+  onMounted(() => {
+    if(auth) {
+      router.push(paths.home)
+    }
+  })
   
   
   const toast = useToast()
+  const rememberMe = ref(false);
   const isLoader = ref(false)
   
 
@@ -30,17 +39,28 @@
     }
     try {
       const {data} = await loginApi.signIn(payload)
-      sessionStorage.setItem('token', data.accessToken);
+      if (rememberMe.value) {
+        localStorage.setItem('token', data.accessToken);
+      } else {
+        sessionStorage.setItem('token', data.accessToken);
+      }
      
       setTimeout(() => {
         router.push('/home')
-      }, 2000);
+      }, 500);
 
     } catch (error) {
       isLoader.value = false
-      toast.error('Ocorreu um erro inesperado', {
-        position: 'top'
-      })
+      console.log(error);
+      if(error.response.status === 401) {
+        toast.error('Usuário ou Senha incorretos', {
+          position: 'top'
+        })
+      } else {
+        toast.error('Ocorreu um erro inesperado', {
+          position: 'top'
+        })
+      }
     } 
     
   };
@@ -70,7 +90,9 @@
            
             <Icon name="user" class="icon-user"  color="#fff"/>
           </div>
-          <span>{{ errors.username }}</span>
+          <div class="content-error">
+            <span class="input-error">{{ errors.username }}</span>
+          </div>
           
           <div class="input-icon">
             <Field 
@@ -82,7 +104,14 @@
             
             <Icon name="lock" class="icon-lock" color="#fff"/>
           </div>
-          <span>{{ errors.password }}</span>
+          <div class="content-error">
+            <span class="input-error">{{ errors.password }}</span>
+          </div>
+
+          <div class="checkbox-container">
+            <input  type="checkbox" id="rememberMe" v-model="rememberMe">
+            <label for="rememberMe">Lembrar-me</label>
+          </div>
 
           <div class="content-btn" v-if="!isLoader">
             <button class="button-submit" >Entrar</button>
@@ -129,7 +158,6 @@
       align-items: center;
       justify-content: center;
       margin-top: 10px;
-     
       width: 100%;
       .form {
         display: flex;
@@ -163,9 +191,35 @@
             height: 20px;
             position: absolute;
             top: 1;
-            left: 0; /* Ajuste conforme necessário */
+            left: 0;        
           }
            
+        }
+        .content-error {
+          width: 100%;
+          margin-top: 10px;
+          display: flex;
+          justify-content: center;
+          .input-error {
+            color: $danger;
+            font-weight: bold;
+            max-width: 240px;
+            text-align: center;
+          }
+        }
+      }
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+        input[type='checkbox'] {
+          margin-right: 5px;
+          border-radius: 4px;
+          border: none;
+        }
+        label {
+          color: $secondary;
+          font-size: 14px;
         }
       }
       .content-btn {
@@ -182,6 +236,10 @@
           border-radius: 4px;
           font-weight: bold;
           font-size: 16px;
+          opacity: 0.8;
+          &:hover {
+            opacity: 0.9;
+          }
         }
       }
       .content-loader {
@@ -191,7 +249,6 @@
         flex-direction: row;
         height: 40px;
         justify-content: center;
-        // background: red;
         width: 100%;
       }
     }
