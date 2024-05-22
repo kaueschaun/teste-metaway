@@ -1,16 +1,22 @@
-
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
+// main.js
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+import App from './App.vue';
 import ToastPlugin from 'vue-toast-notification';
+import router from './router';
 import 'vue-toast-notification/dist/theme-bootstrap.css';
+import { useUserStore } from './stores/user';
 
-
-
-const app = createApp(App)
+const app = createApp(App);
+const pinia = createPinia();
 
 app.use(ToastPlugin)
+app.use(pinia);
+app.use(router);
+app.mount('#app');
 
-app.use(router)
+const userStore = useUserStore();
+userStore.loadUser();
 
-app.mount('#app')
+
+

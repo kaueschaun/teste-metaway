@@ -11,8 +11,8 @@
   "dependencies": {
     "@vee-validate/yup": "^4.12.8",
     "axios": "^1.6.8",
+    "pinia": "^2.1.7",
     "vee-validate": "^4.12.8",
-    "vue": "^3.4.21",
     "vue-router": "^4.3.0",
     "vue-toast-notification": "^3.1.2"
   },
@@ -21,5 +21,9 @@
     "sass": "^1.76.0",
     "sass-loader": "^14.2.1",
     "vite": "^5.2.8"
+  },
+  "peerDependencies": {
+    "vite": "^5.0.0",
+    "vue": "^3.2.25"
   }
 }

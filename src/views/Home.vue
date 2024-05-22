@@ -1,14 +1,12 @@
+<script setup>
+  import HomeContent from 'src/components/home/HomeContent.vue';
+  import Content from 'src/components/main/Content.vue';
+</script>
+
 <template>
-  <div class="container-home">
-    <h1>Home</h1>
-  </div>
+
+  <Content title="Contatos">
+    <HomeContent />
+  </Content>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  .container-home {
-    min-height: 100vh;
-    display: flex;
-  }
-}
-</style>

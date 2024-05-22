@@ -1,7 +1,7 @@
 <script setup>
   import { onMounted, ref } from 'vue';
   import Icon from '../components/_UI/Icon.vue'
-  import loginApi from '../api/requests.js/login.js';
+  import loginApi from '../api/requests/login.js';
   import { useRouter } from 'vue-router';
   import Loader from '../components/_UI/Loader.vue'
   const router = useRouter();
@@ -10,6 +10,8 @@
   import { Form, Field } from 'vee-validate';
   import auth from 'src/middlewares/auth';
   import paths from 'src/router/paths';
+  import { useUserStore } from '../stores/user.js';
+
 
   onMounted(() => {
     if(auth) {
@@ -21,6 +23,8 @@
   const toast = useToast()
   const rememberMe = ref(false);
   const isLoader = ref(false)
+  const store = useUserStore();
+
   
 
   const schema = Yup.object().shape({
@@ -39,19 +43,19 @@
     }
     try {
       const {data} = await loginApi.signIn(payload)
+        store.setUser({ id: data.id, role: data.tipos[0] });
       if (rememberMe.value) {
         localStorage.setItem('token', data.accessToken);
       } else {
         sessionStorage.setItem('token', data.accessToken);
       }
-     
+
       setTimeout(() => {
         router.push('/home')
       }, 500);
 
     } catch (error) {
       isLoader.value = false
-      console.log(error);
       if(error.response.status === 401) {
         toast.error('Usuário ou Senha incorretos', {
           position: 'top'
@@ -71,7 +75,7 @@
   <div class="container">
     <div class="header">
       <div class="content-icon">
-        <Icon  name="menu-book" color="#fff"/>
+        <Icon  name="menu-book" color="#fff" size="large"/>
       </div>
       <h2 class="title">Agenda Pessoal</h2>
     </div>
@@ -102,7 +106,7 @@
               placeholder="Senha"
             />
             
-            <Icon name="lock" class="icon-lock" color="#fff"/>
+            <Icon name="lock" class="icon-lock" color="#fff" />
           </div>
           <div class="content-error">
             <span class="input-error">{{ errors.password }}</span>
@@ -143,6 +147,7 @@
       .title {
         color: $secondary;
         text-transform: uppercase;
+        margin-left: 10px;
       }
       .content-icon {
         flex-direction: column;
