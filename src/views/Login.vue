@@ -11,6 +11,7 @@
   import auth from 'src/middlewares/auth';
   import paths from 'src/router/paths';
   import { useUserStore } from '../stores/user.js';
+  import debounce from 'src/helpers/debounce';
 
 
   onMounted(() => {
@@ -43,31 +44,35 @@
     }
     try {
       const {data} = await loginApi.signIn(payload)
-        store.setUser({ id: data.id, role: data.tipos[0] });
+      store.setUser({ id: data.id, role: data.tipos[0] });
       if (rememberMe.value) {
         localStorage.setItem('token', data.accessToken);
       } else {
         sessionStorage.setItem('token', data.accessToken);
       }
 
-      setTimeout(() => {
-        router.push('/home')
-      }, 500);
-
+      debounced()
+      
     } catch (error) {
       isLoader.value = false
       if(error.response.status === 401) {
         toast.error('Usuário ou Senha incorretos', {
           position: 'top'
         })
+        return
       } else {
         toast.error('Ocorreu um erro inesperado', {
           position: 'top'
         })
+        return
       }
-    } 
-    
+    }     
   };
+
+
+  const debounced = debounce(() => {
+    router.push('/home')
+  }, 500); // Simulando o tempo da API com debounce
 
 </script>
 

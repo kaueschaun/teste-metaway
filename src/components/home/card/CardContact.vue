@@ -6,10 +6,10 @@
         data: Object,
         onAddFavorite: Function,
         onRemoveFavorite: Function,
-        onRemoveContact: Function
     });
 
- 
+    const emit = defineEmits(['delete-request']); 
+
     const actionContact = (contact) => {
         if(contact.favorito) {
             removeFavorite(contact.id)
@@ -22,14 +22,15 @@
     const addFavorite = (contact) => {
         props.onAddFavorite(contact);
     };
-    const removeContact = (id) => {
-        props.onRemoveContact(id);
+    
+
+    const onActions = (contact) => {
+        emit('action-request', contact);
     };
 
     const removeFavorite = (id) => {
         props.onRemoveFavorite(id);
     };
-
 </script>
 
 
@@ -47,8 +48,8 @@
             </div>
             <div class="container-card__content">
                 <div class="container-card__icons-actions">
-                    <Icon name="delete" size="small" class="container-card__icons" @click="removeContact(data.id)"/>
-                    <Icon name="edit" size="small"  class="container-card__icons" />
+                    <Icon name="delete" size="small" class="container-card__icons" @click="onActions({data, type: 'isDelete'})"/>
+                    <Icon name="edit" size="small"  class="container-card__icons" @click="onActions({data, type: 'isEdit'})"/>
                     <button @click="actionContact(data)" class="container-card__actions-favorite">
                         <span :class="`${data.favorito === true ? 'container-card__star-favorite' : 'container-card__star'}`"></span> 
                     </button>
@@ -58,7 +59,7 @@
         <div class="container-card__basic-infos">
             <p :class="`${data.privado ?  'container-card__private-tag' : 'container-card__not-private-tag'}`" ><b>{{ data.privado ?  'Privado' : 'Não privado'}}</b></p>
             <div class="container-card__row-infos">
-                <p><b>Email:</b></p><p class="container-card__text-email">{{ data?.email ? data.email : 'Não informado'}}</p>
+                <p><b>Email:</b></p><p class="container-card__text-email"> {{ data?.email && data.email !== 'null' && data.email.trim() !== '' ? data.email : 'Não informado' }} </p>
             </div>
         </div>
     </div>
@@ -118,7 +119,7 @@
             width: 110px;
             background: gray;
             height: 100%;
-            border-radius: 20%;
+            border-radius: 4px;
         }
         &__content  {
             display: flex;
@@ -206,12 +207,12 @@
             width: 100%;
         }
         &__private-tag {
-            width: 70px;
+            width: 85px;
             height: 25px; 
             font-size: 14px;
             background: $success;
             color: $secondary;
-            border-radius: 8px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -220,7 +221,7 @@
 
         &__not-private-tag {
             height: 25px;
-            width: 80px;
+            width: 85px;
             text-align: center;
             background: $danger;
             color: $secondary;
@@ -229,7 +230,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
+            border-radius: 4px;
         }
         &__row-infos {
             display: flex;
@@ -249,7 +250,7 @@
             margin-left: 5px;
             display: flex;
             flex-wrap: wrap;
-            text-transform: capitalize !important;
+            text-transform: lowercase !important;
         }
 
 

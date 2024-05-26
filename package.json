@@ -14,6 +14,7 @@
     "pinia": "^2.1.7",
     "vee-validate": "^4.12.8",
     "vue-router": "^4.3.0",
+    "vue-the-mask": "^0.11.1",
     "vue-toast-notification": "^3.1.2"
   },
   "devDependencies": {

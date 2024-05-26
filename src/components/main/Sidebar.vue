@@ -47,14 +47,19 @@ import Loader from '../_UI/Loader.vue';
         </button>
     </div>
 
-    <Loader color="primary" v-if="!store.role"/>
+    <div class="container-menu" >
 
-    <div v-for="item in menuItens" class="menu" :key="item.name" else>
-        <RouterLink v-if="item.name !== 'usuários' || store.role === 'ROLE_ADMIN'" :to="item.route" class="link">
-            <Icon :name="item.icon" class="icons" size="default" />
-            <span class="text-link">{{ item.name }}</span>
-        </RouterLink>
+        <div class="container-loader" v-if="!store.role">
+            <Loader color="primary"  />
+        </div>
+        <div v-for="item in menuItens" class="menu" :key="item.name" v-else-if="store.role">
+            <RouterLink v-if="item.name !== 'usuários' || store.role === 'ROLE_ADMIN'" :to="item.route" class="link">
+                <Icon :name="item.icon" class="icons" size="default" />
+                <span class="text-link">{{ item.name }}</span>
+            </RouterLink>
+        </div>
     </div>
+    
 
     <div class="flex"></div>
 
@@ -123,6 +128,17 @@ main {
         }
     }
 
+    .container-menu {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        .container-loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+        }
+    }
     .menu {
         .link {
             display: flex;

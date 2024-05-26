@@ -1,6 +1,5 @@
 <script setup>
 
-// Definir as props do componente
 const props = defineProps({
   name: { type: String, required: true },
   color: { type: String, default: '#A2A0A0' },
@@ -10,7 +9,7 @@ const props = defineProps({
 
 <template>
   <svg 
-    :class="'styled-' + props.size"
+    :class="'styled-' + props.size" :style="{ width: props.size, height: props.size }"
     :fill="props.color"
   >
     <use :href="`src/assets/svg/icons.svg#${props.name}`" />

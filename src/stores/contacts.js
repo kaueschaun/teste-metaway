@@ -1,14 +1,25 @@
 import { defineStore } from 'pinia';
-import favoriteApi from '../api/requests/favorite'; 
-import contactsApi from '../api/requests/contacts'; 
+import favoriteApi from '../api/requests/favorite';
+import contactsApi from '../api/requests/contacts';
+import { useToast } from 'vue-toast-notification';
+
+const toast = useToast()
 
 export const useContactStore = defineStore('contacts', {
   state: () => ({
     contacts: [],
-    contactsFavorite: []
+    contactsFavorite: [],
+    searchResults: [],
+    initialContacts: []
   }),
   getters: {
     contactsCombined(state) {
+      if (state.searchResults.length > 0) {
+        return state.searchResults.map(contact => ({
+          ...contact,
+          favorito: state.contactsFavorite.some(fav => fav.id === contact.id)
+        }));
+      }
       const contatosFavoritos = state.contactsFavorite.map(favorito => ({
         ...favorito,
         favorito: true
@@ -19,7 +30,6 @@ export const useContactStore = defineStore('contacts', {
         favorito: false
       }));
 
-      // Cria um mapa para verificar duplicações pelo ID
       const contatosMap = new Map();
       contatosNormais.forEach(contato => {
         contatosMap.set(contato.id, contato);
@@ -41,16 +51,22 @@ export const useContactStore = defineStore('contacts', {
       try {
         const { data } = await contactsApi.get(id);
         this.setContacts(data);
+        this.initialContacts = this.contactsCombined; // Set initial contacts
       } catch (error) {
-        console.error('Erro ao buscar contatos:', error);
+        toast.error('Ocorreu um erro inesperado!', {
+          position: 'top'
+        });
       }
     },
     async fetchFavorites() {
       try {
         const { data } = await favoriteApi.get();
         this.setContactsFavorite(data);
+        this.initialContacts = this.contactsCombined; // Set initial contacts
       } catch (error) {
-        console.error('Erro ao buscar favoritos:', error);
+        toast.error('Ocorreu um erro inesperado!', {
+          position: 'top'
+        });
       }
     },
     setContacts(contacts) {
@@ -58,6 +74,9 @@ export const useContactStore = defineStore('contacts', {
     },
     setContactsFavorite(contactsFavorite) {
       this.contactsFavorite = contactsFavorite;
+    },
+    addContact(contact) {
+      this.contacts.push(contact);
     },
     addFavorite(contact) {
       this.contactsFavorite.push(contact);
@@ -67,6 +86,13 @@ export const useContactStore = defineStore('contacts', {
     },
     removeContact(id) {
       this.contacts = this.contacts.filter(contact => contact.id !== id);
+    },
+    setSearchResults(results) {
+      this.searchResults = results;
+    },
+    clearSearchResults() {
+      this.searchResults = [];
     }
   }
 });
+
