@@ -1,6 +1,6 @@
 <script setup>
     import Icon from 'src/components/_UI/Icon.vue';
-    import { defineProps, ref } from 'vue';
+    import { ref } from 'vue';
 
     const props = defineProps({
         data: Object,

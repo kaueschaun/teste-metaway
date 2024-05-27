@@ -167,7 +167,6 @@
         <Modal
             :isOpen="isModalOpen"
             :closeButton="true"
-            :isCircularClose="true"
             :title="isModalOpen === 'isCreate' && 'Criar contato' || isModalOpen === 'isEdit' && 'Editar Contato'"
             size="medium"
             @close="closeModal"

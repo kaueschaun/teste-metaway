@@ -1,7 +1,7 @@
 const paths = {
     login: '/entrar',
     home: '/home',
-    profile: '/meu-perfil',
+    profile: '/perfil',
     contacts: '/contatos',
     persons: '/pessoas',
     users: '/usuarios',

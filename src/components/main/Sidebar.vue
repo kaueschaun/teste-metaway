@@ -1,37 +1,57 @@
 <script setup>
-import {RouterLink} from 'vue-router'
-import { onMounted, ref } from 'vue';
+    import {RouterLink} from 'vue-router'
+    import { onMounted, ref } from 'vue';
 
-import menuItens from 'src/theme/menuItens';
-import Icon from '../_UI/Icon.vue';
-import { useUserStore } from '../../stores/user.js';
-import userApi from '../../api/requests/users.js';
-import Loader from '../_UI/Loader.vue';
+    import menuItens from 'src/theme/menuItens';
+    import Icon from '../_UI/Icon.vue';
+    import { useUserStore } from '../../stores/user.js';
+    import userApi from '../../api/requests/users.js';
+    import Loader from '../_UI/Loader.vue';
+
 
     const store = useUserStore();
+    const userId = store.id
     const isExpanded = ref(false)
+
+    const role = ref(null)
+
+    
 
     const toggleMenu = () => {
       isExpanded.value = !isExpanded.value;
     };
 
     onMounted(() => {
-        if(!store.role) {
-
-            getUser() 
-        }
+        console.log(store.password);
+        getUser() 
     })
-
+    
     const getUser = async() => {
-        const id = localStorage.getItem('userId')
         try {
-            const {data} = await userApi.get(id)
-            store.setUser({ id: data.object.usuario.id, role: data.object.tipos[0] });
+            const {data} = await userApi.get(userId)
+            
+            store.setUser(
+                {
+                    id: data.object.usuario.id,
+                    role: data.object.tipos,
+                    email: data.object.usuario.email,
+                    name: data.object.usuario.nome,
+                    birthDate: data.object.usuario.dataNascimento,
+                    cpf: data.object.usuario.cpf,
+                    telefone: data.object.usuario.telefone,
+                    username: data.object.usuario.username
+                }
+            );
 
+            const storeRole = store?.role?.filter(el => el === 'ROLE_ADMIN')
+            role.value = storeRole[0]
+            
         } catch (error) {
             
         }
     }
+
+
 </script>
 
 <template>
@@ -52,8 +72,8 @@ import Loader from '../_UI/Loader.vue';
         <div class="container-loader" v-if="!store.role">
             <Loader color="primary"  />
         </div>
-        <div v-for="item in menuItens" class="menu" :key="item.name" v-else-if="store.role">
-            <RouterLink v-if="item.name !== 'usuários' || store.role === 'ROLE_ADMIN'" :to="item.route" class="link">
+        <div v-for="item in menuItens" class="menu" :key="item.name" v-else-if="role || store.role">
+            <RouterLink v-if="item.name !== 'usuários' || role === 'ROLE_ADMIN'" :to="item.route" class="link">
                 <Icon :name="item.icon" class="icons" size="default" />
                 <span class="text-link">{{ item.name }}</span>
             </RouterLink>
@@ -238,4 +258,3 @@ main {
     }
 }
 </style>
-

@@ -26,6 +26,7 @@ const props = defineProps({
     padding: 50px 15px;
     background: $primary;
     overflow-y: auto;
+    
 
     @media (min-width: $breakpoint-large) {
       padding: 60px 50px;
