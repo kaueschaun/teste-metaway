@@ -139,9 +139,9 @@
 
         &__icons {
             margin-left: 10px;
-            cursor: pointer;
             transition: all ease-in-out .25s;
             &:hover {
+                cursor: pointer;
                 transform: scale(1.2);
                 opacity: 0.7;
             }
@@ -150,6 +150,9 @@
         &__actions-favorite {
             background: transparent;
             margin-left: 10px;
+            &:hover {
+                cursor: pointer;
+            }
         }
 
         @mixin star($color) {
@@ -177,9 +180,11 @@
             }
 
             transition: all ease-in-out .30s;
+            
             &:hover {
                 transform: scale(1.2);
                 opacity: 0.7;
+                cursor: pointer;
             }
 
             &::before {

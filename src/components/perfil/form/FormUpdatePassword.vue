@@ -28,7 +28,7 @@
 
     const schema = Yup.object().shape({
         password: Yup.string()
-            .min(8, 'A senha  atual deve ter no mínimo 8 caracteres!')
+            .min(8, 'O campo senha atual deve ter no mínimo 8 caracteres!')
             .matches(/^(?=.*[a-zA-Z])(?=.*\d)/, 'O campo senha atual deve conter pelo menos uma letra e um número')
             .required('O campo senha atual é obrigatório!'),
         newPassword: Yup.string()

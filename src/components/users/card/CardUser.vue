@@ -1,68 +1,56 @@
 <script setup>
-    import Icon from 'src/components/_UI/Icon.vue';
-    import { useUserStore } from 'src/stores/user';
+    import { useUsersStore } from 'src/stores/users';
     import date from 'src/helpers/date';
+    import Icon from 'src/components/_UI/Icon.vue';
+    const formatDate  = dateContent => date.format(dateContent);
     import phoneFormatter from 'src/helpers/phone.js';
 
-    const userStore = useUserStore()
-    const formatDate  = dateContent => date.format(dateContent)
 
-    const emit = defineEmits(['on-action']);
-    const onActions = (action) => {
-        emit('on-action', action);
-    };
-
+    const props = defineProps({
+        data: Object,
+    });
 </script>
-
 <template>
     <div class="container-card">
-        <div class="container-card__content">
-            
+         <div class="container-card__content">
             <div class="container-card__row">
                 <Icon name="user"  color="#A2A0A0"/>
                 <p class="container-card__text-infos">Nome de Usuário:</p>
-                <p class="container-card__text-data">{{userStore.username ? userStore.username : 'Não Informado'}}</p>
+                <p class="container-card__text-data">{{data.username ? data.username : 'Não Informado'}}</p>
             </div>
             
             <div class="container-card__row">
                 <Icon name="call"/>
                 <p class="container-card__text-infos">Telefone:</p>
-                <p class="container-card__text-data">{{phoneFormatter(userStore.telefone) ? phoneFormatter(userStore.telefone) : 'Não Informado'}}</p>
+                <p class="container-card__text-data">{{ data.telefone ? phoneFormatter(data.telefone) : 'Não Informado' }}</p>
             </div>
 
             <div class="container-card__row">
                 <Icon name="email"  color="#A2A0A0"/>
                 <p class="container-card__text-infos">E-mail:</p>
-                <p class="container-card__text-data">{{userStore.email ? userStore.email : 'Não Informado' }}</p>
+                <p class="container-card__text-data">{{data.email ? data.email : 'Não Informado'}}</p>
             </div>
 
             <div class="container-card__row">
                 <Icon name="badge"  color="#A2A0A0"/>
                 <p class="container-card__text-infos">Nome:</p>
-                <p class="container-card__text-data">{{userStore.name ? userStore.name : 'Não Informado' }}</p>
-            </div>
-            <div class="container-card__row">
-                <Icon name="lock"  color="#A2A0A0"/>
-                <p class="container-card__text-infos">Tipo de Permissão:</p>
-                <p class="container-card__text-data" v-for="role in userStore.role">
-                    {{ role ? role : 'Não Informado'}}
-                </p>
+                <p class="container-card__text-data">{{data.nome ? data.nome : 'Não Informado'}}</p>
             </div>
             
             <div class="container-card__row">
                 <Icon name="calendar"  color="#A2A0A0"/>
                 <p class="container-card__text-infos">Data de Nascimento:</p>
-                <p class="container-card__text-data">{{formatDate(userStore.birthDate)}}</p>
+                <p class="container-card__text-data">{{data.dataNascimento ? formatDate(data.dataNascimento) :  'Não Informado'}}</p>
             </div>
-
+            
             <div class="container-card__row">
                 <p class="container-card__text-infos">CPF:</p>
-                <p class="container-card__text-data">{{userStore.cpf}}</p>
+                <p class="container-card__text-data">{{data.cpf ? data.cpf : 'Não Informado' }}</p>
             </div>
 
             <div class="container-card__content-icons">
                 <div 
-                    class="container-card__action-perfil"
+                    class="container-card__action-user"
                     @click="onActions('edit-perfil')"
                  >
                     <Icon name="edit" size="20px" />
@@ -76,7 +64,6 @@
                     <p class="container-card__text-data">Alterar Senha</p>
                 </div>
             </div>
-
         </div>
 
     </div>
@@ -84,19 +71,15 @@
 
 <style lang="scss" scoped>
     .container-card {
-        background: $secondary;
-        border-radius: 8px;
-        height: 380px;
-        width: 100%;
-        display: flex;
         padding: 15px;
-
-        @media (min-width: $breakpoint-small) {
-            width: 100%;
+        width: 100%;
+        background: $secondary;
+        height: 310px;
+        border-radius: 8px;
+        @media(max-width: $breakpoint-micro) {
+            height: 340px;
         }
-        @media (min-width: 450px) {
-            width: 350px;
-        }
+        
         &__content {
             display: flex;
             flex-direction: column;
@@ -129,7 +112,9 @@
             margin-top: 15px;
             display: flex;
             flex-direction: row;
-            align-items: center;  
+            align-items: center; 
+            flex-wrap: wrap;
+            text-align: center;
         }
         &__text-data {
             color: $primaryDark;
@@ -137,7 +122,7 @@
             margin-left: 5px;
         }
 
-        &__action-password, &__action-perfil {
+        &__action-password, &__action-user {
             margin-left: 15px;
             transition: all ease-in-out .25s;
             &:hover {

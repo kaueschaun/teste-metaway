@@ -1,6 +1,5 @@
 <script setup>
-  import { RouterLink, RouterView } from 'vue-router'
-  import Login from 'src/views/Login.vue'
+  import { RouterView } from 'vue-router'
 
 
 </script>

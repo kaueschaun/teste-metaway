@@ -1,6 +1,6 @@
 <script setup>
   import InputSearch from '../../components/_UI/InputSearch.vue'
-  import ListContacts from './ListContacts.vue'
+  import ContactsList from './ContactsList.vue'
   import contactsApi from 'src/api/requests/contacts';
   import { useContactStore } from '../../stores/contacts.js';
   import { ref } from 'vue';
@@ -60,7 +60,7 @@
     </div>
   </div>
   
-  <ListContacts :isLoader="isLoading"  :isNotFound="isNotFound"/>
+  <ContactsList :isLoader="isLoading"  :isNotFound="isNotFound"/>
 
 </template>
 

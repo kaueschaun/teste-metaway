@@ -9,6 +9,12 @@ const users = {
     },
     updatePassword: (payload) => {
         return api().post('usuario/alterarSenha', payload)
+    },
+    search: (term) => {
+        return api().post('usuario/pesquisar', term)
+    },
+    create: (payload) => {
+        return api().post('usuario/salvar', payload)
     }
 }
 

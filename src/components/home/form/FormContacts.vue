@@ -48,7 +48,6 @@
     const namePerson = ref(null)
     const { value: privado } = useField('privado', Yup.boolean().default(false));
 
-    // const 
 
     const handleSetEditData = (data) => {
         telefone.value = data.telefone || '';

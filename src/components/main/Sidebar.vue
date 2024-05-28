@@ -22,7 +22,6 @@
     };
 
     onMounted(() => {
-        console.log(store.password);
         getUser() 
     })
     

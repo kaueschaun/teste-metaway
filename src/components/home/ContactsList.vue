@@ -141,6 +141,7 @@
     <div class="container-list">
         <div class="container-list__content-add">
            <button 
+                type="button"
                 class="container-list__button" 
                 @click="onConfirm({type: 'isCreate'})"
             >
@@ -178,7 +179,7 @@
                     <button class="container-list__button-exit" @click="isModalOpen = false">Cancelar</button>
                 </div>
                 <div v-else-if="isLoading">
-                    <Loader color="secondary" size="medium"/>
+                    <Loader color="secondary" size="40px"/>
                 </div>
             </div>
             <div v-else-if="isModalOpen === 'isCreate' || isModalOpen === 'isEdit' ">
@@ -189,7 +190,7 @@
     </div>
 </template>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
     .container-list {
         margin-top: 50px;
         display: flex;
@@ -216,27 +217,29 @@
             display: flex;
             align-items: center;
             text-indent: 15px;
-            
             transition: all ease-in-out .25s;
-            &:hover {
-                transform: scale(1.1);
-            }
-
+            
+            
             &::before, &::after {
                 content: '';
                 position: absolute;
                 background-color: $secondary;
             }
-
+            
             &::before {
                 width: 2px;
                 margin-left: 4px;
                 height: 10px; 
             }
-
+            
             &::after {
                 width: 10px; 
                 height: 2px;
+            }
+            
+            &:hover {
+                transform: scale(1.1);
+                cursor: pointer;
             }
         }
 
@@ -279,7 +282,7 @@
             border-radius:  4px;
             color: $primaryDark;
             margin-left: 10px;
-            
+            cursor: pointer;
         }
         &__button-confirm {
             background: $success;
@@ -287,6 +290,7 @@
             height: 25px;
             border-radius:  4px;
             color: $secondary;
+            cursor: pointer;
         }
     }
 </style>
