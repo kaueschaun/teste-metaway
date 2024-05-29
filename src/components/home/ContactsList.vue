@@ -145,7 +145,7 @@
                 class="container-list__button" 
                 @click="onConfirm({type: 'isCreate'})"
             >
-                Criar contato
+                Criar Contato
             </button>
         </div>
         <div class="container-list__content"  v-if="verify.length > 0 && !isLoader && !isLoading">
@@ -161,7 +161,7 @@
         <div v-else-if="isLoader || isLoading">
             <Loader color="secondary"  size="40px"/>
         </div>
-        <div v-else-if="isNotFound || verify === 0">
+        <div v-else-if="isNotFound || verify.length === 0">
             <NotFound  title="Nenhum resultado encontrado!" size="70px"/>
         </div>
     

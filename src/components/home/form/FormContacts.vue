@@ -116,10 +116,8 @@
         if (props.data.value) delete payload.privado;
 
 
-        console.log(payload);
         try {
             const {data} = await contactsApi.create(payload)
-            console.log(data)
             toast.success(`Contato ${props.data.value ? 'editado' : 'criado'} com sucesso!`, {
                 position: 'top'
             });

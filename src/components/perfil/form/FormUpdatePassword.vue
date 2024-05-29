@@ -54,7 +54,6 @@
                 position: 'top'
             })
         } catch (error) {
-            console.log(error);
             if(error.response.status === 400) {
                 messageError.value = error.response.data.message
                 isLoading.value = false

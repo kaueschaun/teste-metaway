@@ -6,12 +6,15 @@
     import CardUser from './card/CardUser.vue'
     import Loader from '../_UI/Loader.vue';
     import { useToast } from 'vue-toast-notification';
+    import NotFound from '../commons/NotFound.vue';
+    
 
     const storeUsers = useUsersStore()
 
     const toast = useToast()
     const users = ref([])
     const isLoading = ref(false)
+    const isNotFound = ref(false)
 
     onMounted(() => {
         getUsers()
@@ -26,7 +29,9 @@
             const {data} = await usersApi.search(term)
             users.value = data
             storeUsers.setUsers(data)
-
+            if(!users.value.length) {
+                isNotFound.value = true
+            }
         } catch (error) {
             toast.error('Ocorreu um erro inesperado!', {
                 position: 'top'
@@ -42,7 +47,7 @@
         <div 
             v-for="user in users" :key="user.id" 
             class="container-list__item"
-            v-if="!isLoading"
+            v-if="!isLoading || users.length > 0" 
         >
             <CardUser 
                 :data="user"
@@ -52,6 +57,8 @@
         <div class="container-list__content-loader" v-else-if="isLoading">
             <Loader color="secondary" size="40px" />
         </div>
+
+        <NotFound v-if="isNotFound" title="Nenhum resultado encontrado" size="70px"/>
         
     </div>
 </template>
@@ -66,6 +73,7 @@
         &__item {
             width: 100%;
             margin-bottom: 60px;
+            display: flex;
             @media (min-width: $breakpoint-medium) {
                 width: 370px;
             }

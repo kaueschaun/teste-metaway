@@ -1,25 +1,15 @@
 <script setup>
     import UsersList from './UsersList.vue'
     import Modal from '../_UI/Modal.vue';
-    import FormCreateUser from '../users/form/FormCreateUser.vue'
-    import { ref } from 'vue';
+    import { useStoreAction } from 'src/stores/action';
+    import FormUsers from './form/FormUsers.vue';
+    const storeAction = useStoreAction()
 
-    const isModalOpen = ref(false)
-
-    const onConfirm = (action ) => {
-        if(action  === 'isCreate') {
-            isModalOpen.value = 'isCreate';
-        }
-
-        if(action === 'isEdit') {
-            isModalOpen.value = 'isCreate';
-        }
-    }  
 
     const closeModal = () => {
-        isModalOpen.value = false
+        storeAction.action = false
     }
-
+   
 </script>
 
 
@@ -28,7 +18,7 @@
         <div class="container-users__content-button">
             <button 
                 class="container-users__button"
-                @click="onConfirm('isCreate')"
+                @click="storeAction.onConfirm({type: 'isCreate'})"
             >
                 Criar Usuário
             </button>
@@ -37,13 +27,13 @@
         <UsersList />
 
         <Modal
-            :title="isModalOpen === 'isCreate' ? 'Criar usuário'  : 'Editar usuário'"
-            :isOpen="isModalOpen"
+            :title="storeAction.action.type === 'isCreate' ? 'Criar usuário'  : 'Editar usuário'"
+            :isOpen="storeAction.action"
             :closeButton="true"
             size="medium"
             @close="closeModal"
         >
-            <FormCreateUser :closeModal="closeModal"/>
+            <FormUsers :closeModal="closeModal"  :edit="storeAction.action.data"/>
         </Modal>
     </div>
 </template>
@@ -59,7 +49,6 @@
             width: 300px;
             margin-bottom: 40px;
             display: flex;
-            // background: red;
             justify-content: flex-end;
             width: 100%;
         }

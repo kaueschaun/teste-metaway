@@ -4,12 +4,19 @@
     import Icon from 'src/components/_UI/Icon.vue';
     const formatDate  = dateContent => date.format(dateContent);
     import phoneFormatter from 'src/helpers/phone.js';
+    import { useStoreAction } from 'src/stores/action';
+    const storeAction = useStoreAction()
 
 
     const props = defineProps({
         data: Object,
     });
+
+    const action = async(action) => {
+       await storeAction.onConfirm(action)
+    }
 </script>
+
 <template>
     <div class="container-card">
          <div class="container-card__content">
@@ -51,18 +58,12 @@
             <div class="container-card__content-icons">
                 <div 
                     class="container-card__action-user"
-                    @click="onActions('edit-perfil')"
+                     @click="action({data, type:'isEdit'})" 
                  >
                     <Icon name="edit" size="20px" />
                     <p class="container-card__text-data">Editar</p>
                 </div>
-                <div 
-                    @click="onActions('edit-password')" 
-                    class="container-card__action-password"
-                >
-                    <Icon name="lock-reset" size="20px" />
-                    <p class="container-card__text-data">Alterar Senha</p>
-                </div>
+
             </div>
         </div>
 
@@ -108,6 +109,7 @@
             font-size: 12px;
             font-weight: bold;
         }
+
         &__row {
             margin-top: 15px;
             display: flex;
@@ -116,14 +118,14 @@
             flex-wrap: wrap;
             text-align: center;
         }
+
         &__text-data {
             color: $primaryDark;
             font-size: 12px;
             margin-left: 5px;
         }
 
-        &__action-password, &__action-user {
-            margin-left: 15px;
+        &__action-user {
             transition: all ease-in-out .25s;
             &:hover {
                 transform: scale(1.1);

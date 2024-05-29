@@ -69,10 +69,11 @@
             position: relative;
             transition: all 0.3s ease-in-out;
             display: flex;
-            justify-content: center;
             flex-direction: column;
             align-items: center;
-
+            max-height: 100vh; 
+            overflow: hidden; 
+    
             & > h2 {
                 color: $secondary;
             }
@@ -103,7 +104,11 @@
     
         &__content {
             margin-top: 20px;
+            width: 100%;
+            max-height: 80vh;
+            overflow: auto;  
         }
+    
     }
 </style>
   
